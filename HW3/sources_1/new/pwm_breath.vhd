@@ -22,7 +22,7 @@ signal   n_cycle_PWM : integer range 0 to 7000;
 constant   default_n : integer := 5000;  -- default n pwm cycles
 constant n_MIN_cycle : integer := 2000;   -- min n pwm cycles
 constant n_MAX_cycle : integer := 7000; -- max n pwm cycles
-constant       det_n : integer := 1;   -- delta n pwm cycles, one scale of n
+constant       det_n : integer := 500;   -- delta n pwm cycles, one scale of n
 signal brighter_darker : std_logic;
 signal n_cycle_PWM_complete: std_logic;
 signal prev_pwm_state: std_logic;
@@ -46,11 +46,11 @@ begin
 pwm <= pwm_state;
 sw <= i_sw_up & i_sw_dn;
  
-BFA:process(i_clk, i_rst, i_sw_up, i_sw_dn)
+BFA:process(e_clk, i_rst, i_sw_up, i_sw_dn)
 begin
     if i_rst = '0' then
         n_cycle_PWM <= default_n; 
-    elsif i_clk'event and i_clk = '1' then
+    elsif e_clk'event and e_clk = '1' then
         case sw is
             when "00" => 
                 null;
@@ -210,13 +210,13 @@ begin
 end process;
 div_clk : process(i_clk, i_rst)
 begin
-    if i_rst = '1' then
+    if i_rst = '0' then
         div <= (others => '0');
     elsif rising_edge(i_clk) then
         div <= div + 1;
     end if;
 end process;
-e_clk <= div(1);
+e_clk <= div(24);
 end Behavioral;
 
 
