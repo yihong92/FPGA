@@ -1,37 +1,7 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 2024/11/08 21:46:20
--- Design Name: 
--- Module Name: pingpong - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity pingpong is
 port(
@@ -52,12 +22,15 @@ architecture Behavioral of pingpong is
 	type   state_type is (initial,move_left,move_right,win_l,win_r);
 	signal state   : state_type;
 	signal pre_state : state_type;
-	signal limt    : std_logic_vector(3 downto 0);
 	
-	
-	
-	signal div    : std_logic_vector(60 downto 0);
-    signal e_clk  : std_logic;
+	signal div        : std_logic_vector(24 downto 0);
+    signal e_clk    : std_logic;
+    
+    signal i : integer range 0 to 30;
+    signal i2 : integer range 0 to 3;
+    signal lfsr : std_logic_vector (1 downto 0);
+    signal feedback : std_logic;
+    signal v_clk : std_logic;
 	
 
 begin
@@ -109,11 +82,11 @@ begin
 	end if;
 end process;
 
-led_show : process(e_clk, i_rst, btn_l, btn_r, btn_s)  --e_clk
+led_show : process(v_clk, i_rst, btn_l, btn_r, btn_s)  --e_clk
 begin
 	if i_rst = '1' then
 		ball <= "00000001";
-	elsif rising_edge(e_clk) then
+	elsif rising_edge(v_clk) then
 		case state is
 			when initial =>
 				ball <= "00000001";
@@ -122,13 +95,13 @@ begin
 			when move_left =>
 				ball <= '0' & ball(7 downto 1);
 			when win_l =>
-				if pre_state = win_l then
+				if btn_s = '1' then
 					ball <= score_r & score_l;
 				else
 					ball <= "00000001";
 				end if;
 			when win_r =>
-				if pre_state = win_r then
+				if btn_s = '1' then
 					ball <= score_r & score_l;
 				else
 					ball <= "10000000";
@@ -177,7 +150,18 @@ begin
 end process;
 e_clk <= div(24);
 
-
-
-
+process(e_clk, i_rst)
+begin
+    if i_rst = '1' then
+        lfsr <= "01";
+        i <= 0;
+        i2 <= 0;
+    elsif rising_edge(e_clk) then
+        feedback <= lfsr(1) xor lfsr(0);
+        lfsr    <= feedback & lfsr(1);
+        i2      <= to_integer(signed(lfsr));
+        i <= i2 + 23;
+    end if;
+end process;
+v_clk <= div(i);
 end Behavioral;
