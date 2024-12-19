@@ -12,7 +12,7 @@ demo:https://youtube.com/shorts/HCbeNhxoVuM?feature=share
 ## HW_5
 5-1 VGA顯示矩形、圓形等
  
-5-1 demo:![image]連結
+5-1 demo:![image]https://github.com/yihong92/FPGA/blob/main/HW5/HW5-1%20VGA%E9%A1%AF%E7%A4%BA/%E6%88%90%E6%9E%9C%E5%9C%96/%E6%88%90%E6%9E%9C%E5%9C%96.jpg
  
 5-2 VGA顯示乒乓球對打(bouns球改成圖片使用bram)
  
