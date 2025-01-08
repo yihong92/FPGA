@@ -26,7 +26,9 @@ demo:https://youtube.com/shorts/HCbeNhxoVuM?feature=share
 兩塊板子互打一顆球
 
 demo:https://youtu.be/cQW_h1VYDHQ
+##控管紀錄
 
+https://github.com/yihong92/FPGA/activity
 
 
 
