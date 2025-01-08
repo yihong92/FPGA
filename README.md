@@ -42,8 +42,5 @@ bouns 影片demo:https://youtu.be/EhXAoEEaJS8
 影片demo:https://youtu.be/cQW_h1VYDHQ
 ## 控管紀錄
 
-https://github.com/yihong92/FPGA/activity
-
-
-
+![github com_yihong92_FPGA_commits_main_](https://github.com/user-attachments/assets/f7f055e7-611d-42e8-b999-24a952273121)
 
